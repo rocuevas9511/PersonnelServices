@@ -35,7 +35,7 @@ stages:
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
-        command: build
+        command: publish
         projects: '**/*.csproj'
         arguments: '--configuration Release' # Update this to match your need
 
