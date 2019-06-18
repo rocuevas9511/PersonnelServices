@@ -10,6 +10,6 @@ namespace PersonnelServices.DAL.Interface
     {
         Task<string> InsertSurvey(ModSurveys bom);
 
-        Task<IEnumerable<ModSurveys>> GetSurveyAsync();
+        Task<ModSurveys> GetSurvey(string lang);
     }
 }

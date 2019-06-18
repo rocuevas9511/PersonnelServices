@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using PersonnelServices.DAL.Interface;
 using PersonnelServices.Model;
 using Swashbuckle.AspNetCore.Annotations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,19 +58,19 @@ namespace PersonnelServices.Controllers
         [SwaggerOperation(
             Summary = "Set survey",
             Description = "Solo es una prueba del API.",
-            OperationId = "GetTest",
-            Tags = new[] { "Test" }
+            OperationId = "SetSurvey",
+            Tags = new[] { "Survey" }
         )]
         [SwaggerResponse(201, "Successfully")]
         [SwaggerResponse(500, "Something not expected happened.")]
-        [Route("survey/insert/{survey}")]
-        public async Task<IActionResult> SetSurvey(string survey)
+        [Route("survey/insert/{survey}/language/{language}")]
+        public async Task<IActionResult> SetSurvey(string survey, string language)
         {
             IActionResult response;
 
             try
             {
-                string result = await _mongodb.ApiSurveys.InsertSurvey( new ModSurveys { Question = survey, Response = "" }  );
+                string result = await _mongodb.ApiSurveys.InsertSurvey( new ModSurveys { Question = survey, Response = "", Language = language }  );
 
                 if (result.Length > 0)
                 {
@@ -81,6 +82,41 @@ namespace PersonnelServices.Controllers
                 }
             }
             catch
+            {
+                response = ResponseErrorCode();
+            }
+
+            return response;
+        }
+
+        [HttpGet]
+        [SwaggerOperation(
+            Summary = "Set survey",
+            Description = "Solo es una prueba del API.",
+            OperationId = "GetSurvey",
+            Tags = new[] { "Survey" }
+        )]
+        [SwaggerResponse(201, "Successfully")]
+        [SwaggerResponse(500, "Something not expected happened.")]
+        [Route("survey/{language}")]
+        public async Task<IActionResult> GetSurvey(string language)
+        {
+            IActionResult response;
+
+            try
+            {
+                ModSurveys result = await _mongodb.ApiSurveys.GetSurvey(language);
+
+                if (result?.Question.Length > 0)
+                {
+                    response = Ok(result);
+                }
+                else
+                {
+                    response = NoContent();
+                }
+            }
+            catch(Exception e)
             {
                 response = ResponseErrorCode();
             }

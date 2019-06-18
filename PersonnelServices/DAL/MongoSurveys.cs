@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using PersonnelServices.DAL.Interface;
 using PersonnelServices.Model;
 using System;
@@ -17,10 +18,11 @@ namespace PersonnelServices.DAL
             _apiKeysCollection = apiKeysCollection;
         }
 
-        public async Task<IEnumerable<ModSurveys>> GetSurveyAsync()
+        public async Task<ModSurveys> GetSurvey(string lang)
         {
-            return await _apiKeysCollection.Find(a => true)
-                                           .ToListAsync();
+            IEnumerable<ModSurveys> result = await _apiKeysCollection.Aggregate<ModSurveys>(GetPipelineSurveys(lang)).ToListAsync();
+
+            return result.ElementAt<ModSurveys>( new Random().Next(0, result.Count() -1) );
         }
 
         public Task<string> InsertSurvey(ModSurveys survey)
@@ -29,5 +31,19 @@ namespace PersonnelServices.DAL
 
             return Task.FromResult(survey?.Id.ToString());
         }
+
+        #region PIPELINE
+
+        private BsonDocument[] GetPipelineSurveys(string lang)
+        {
+            return new[] {
+                GetPipelineMatch(new BsonDocument
+                {
+                    { ModSurveys.MODEL_LANGUAGE, lang }
+                })
+            };
+        }
+
+        #endregion
     }
 }

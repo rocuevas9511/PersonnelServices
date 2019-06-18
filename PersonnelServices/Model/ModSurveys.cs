@@ -18,10 +18,19 @@ namespace PersonnelServices.Model
             get { return KEY_RESPONSE; }
         }
 
+        public static string MODEL_LANGUAGE
+        {
+            get { return KEY_LANGUAGE; }
+        }
+
         [BsonElement(KEY_QUESTION)]
         public string Question { get; set; }
 
         [BsonElement(KEY_RESPONSE)]
         public string Response { get; set; }
+
+        [BsonElement(KEY_LANGUAGE)]
+        public string Language { get; set; }
+
     }
 }

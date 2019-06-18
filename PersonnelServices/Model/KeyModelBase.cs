@@ -12,5 +12,6 @@ namespace PersonnelServices.Model
         // Surveys Collection
         protected const string KEY_QUESTION = "question";
         protected const string KEY_RESPONSE = "response";
+        protected const string KEY_LANGUAGE = "language";
     }
 }
