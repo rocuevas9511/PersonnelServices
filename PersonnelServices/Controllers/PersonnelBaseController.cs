@@ -10,7 +10,7 @@ using PersonnelServices.DAL.Interface;
 namespace PersonnelServices.Controllers
 {
     [Produces("application/json")]
-    [Route("personnel")]
+    [Route("api/personnel")]
     [ApiController]
     public class PersonnelBaseController : ControllerBase
     {
