@@ -6,5 +6,6 @@ namespace PersonnelServices.DAL.Interface
         IApiTest ApiTest { get;  }
 
         IApiSurveys ApiSurveys { get;  }
+        IEmotionsDAL ApiEmotion { get; }
     }
 }

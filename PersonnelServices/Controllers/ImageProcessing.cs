@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using PersonnelServices.Model;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,13 +18,13 @@ namespace PersonnelServices.Controllers
         const string requestParameters = "returnFaceId=true&returnFaceLandmarks=false" +
                 "&returnFaceAttributes=emotion";
 
-        static ImageProcessing()
+        public ImageProcessing()
         {
             //subscriptionKey = Configuration.GetSection("ConnectionStrings").GetValue<string>("MongoDBConnectionString");
              
         }
         
-        public static async Task<string> MakeAnalysisRequest(byte[] byteData)
+        public async Task<ModEmotion> MakeAnalysisRequest(byte[] byteData)
         {
             var client = new HttpClient();
 
@@ -39,8 +42,40 @@ namespace PersonnelServices.Controllers
                 
                 response = await client.PostAsync(uri, content);                
                 string contentString = await response.Content.ReadAsStringAsync();
-                return contentString;
+                return JsonToEmotion(contentString);                 
             }
         }
+
+        public ModEmotion JsonToEmotion(string json)
+        {
+            dynamic jsonResponse = JsonConvert.DeserializeObject(json);
+            var response = jsonResponse[0];
+            var face = response["faceAttributes"];
+            JObject emotion = face["emotion"];
+            
+            double max = double.MinValue;
+            string key = string.Empty;
+
+            foreach (var child in emotion)
+            {
+                JToken val = child.Value;
+                float valf = (float)val;
+                if (valf>max)
+                {
+                    key = child.Key;
+                    max = valf;
+                }
+            }
+            
+            ModEmotion modEmotion = new ModEmotion()
+            {
+                Date = DateTime.UtcNow.ToString(),
+                Details = emotion.ToString(),
+                Emotion = key,
+                Score = max.ToString()
+            };
+            return modEmotion;
+        }
+
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using PersonnelServices.DAL.Interface;
+using PersonnelServices.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,10 +13,11 @@ namespace PersonnelServices.Controllers
 {
     public class ImageRecognitionController : PersonnelBaseController 
     {
+        ImageProcessing imageProcessingService;
         public ImageRecognitionController(IRepository repository, IConfiguration configuration)
             : base(repository, configuration)
         {
-
+            imageProcessingService = new ImageProcessing();
         }
 
         [HttpPost]
@@ -31,11 +33,16 @@ namespace PersonnelServices.Controllers
                         file.CopyTo(ms);
                         var fileBytes = ms.ToArray();
 
-                        string result = await ImageProcessing.MakeAnalysisRequest(fileBytes);
+                        ModEmotion result = await imageProcessingService.MakeAnalysisRequest(fileBytes);
 
-                        if (!string.IsNullOrEmpty(result))
-                        {
-                            return Ok(result);
+                        if (result!=null)
+                        {                            
+                            bool insert = await _mongodb.ApiEmotion.InsertEmotion(result);
+
+                            if(insert)
+                                return Ok(result);
+                            else
+                                return StatusCode(500, $"Server Internal Error, The object wasn't saved");
                         }
                         else
                         {
