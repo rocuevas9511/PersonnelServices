@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2.HPack;
+using Microsoft.Extensions.Configuration;
 using PersonnelServices.DAL.Interface;
 
 namespace PersonnelServices.Controllers
@@ -14,10 +15,13 @@ namespace PersonnelServices.Controllers
     [ApiController]
     public class PersonnelBaseController : ControllerBase
     {
+        protected readonly IConfiguration Configuration;
         protected readonly IRepository _mongodb;
 
-        public PersonnelBaseController(IRepository repository)
+        public PersonnelBaseController(IRepository repository, IConfiguration configuration)
         {
+            Configuration = configuration;
+
             if (repository != null)
             {
                 _mongodb = repository;

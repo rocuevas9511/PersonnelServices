@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using PersonnelServices.DAL.Interface;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,8 @@ namespace PersonnelServices.Controllers
 {
     public class ImageRecognitionController : PersonnelBaseController 
     {
-        public ImageRecognitionController(IRepository repository)
-            : base(repository)
+        public ImageRecognitionController(IRepository repository, IConfiguration configuration)
+            : base(repository, configuration)
         {
 
         }

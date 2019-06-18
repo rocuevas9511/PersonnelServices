@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using PersonnelServices.DAL.Interface;
 using PersonnelServices.Model;
 using Swashbuckle.AspNetCore.Annotations;
@@ -10,8 +11,8 @@ namespace PersonnelServices.Controllers
 {
     public class PersonnelServicesController : PersonnelBaseController
     {
-        public PersonnelServicesController(IRepository repository)
-            : base(repository)
+        public PersonnelServicesController(IRepository repository, IConfiguration configuration)
+            : base(repository, configuration)
         {
 
         }
