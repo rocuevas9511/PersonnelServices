@@ -8,13 +8,19 @@ using System.Threading.Tasks;
 
 namespace PersonnelServices.Controllers
 {    
-    public static class ImageProcessing
+    public class ImageProcessing
     {
         const string subscriptionKey = "1b571353cbdf4e97b9e341e88c118d55";
         const string uriBase = "https://centralus.api.cognitive.microsoft.com/face/v1.0/";
         const string requestParameters = "returnFaceId=true&returnFaceLandmarks=false" +
                 "&returnFaceAttributes=emotion";
 
+        static ImageProcessing()
+        {
+            //subscriptionKey = Configuration.GetSection("ConnectionStrings").GetValue<string>("MongoDBConnectionString");
+             
+        }
+        
         public static async Task<string> MakeAnalysisRequest(byte[] byteData)
         {
             var client = new HttpClient();

@@ -12,5 +12,12 @@ namespace PersonnelServices.Model
         // Surveys Collection
         protected const string KEY_QUESTION = "question";
         protected const string KEY_RESPONSE = "response";
+
+        // Surveys Collection
+        protected const string KEY_DATE = "Date";
+        protected const string KEY_DETAILS = "Details";
+        protected const string KEY_EMOTION = "Emotion";
+        protected const string KEY_SCORE = "Score";
+
     }
 }
