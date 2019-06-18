@@ -14,11 +14,13 @@ namespace PersonnelServices.Model
         protected const string KEY_RESPONSE = "response";
         protected const string KEY_LANGUAGE = "language";
         
-        // Surveys Collection
+        // Emotion Collection
         protected const string KEY_DATE = "Date";
         protected const string KEY_DETAILS = "Details";
         protected const string KEY_EMOTION = "Emotion";
         protected const string KEY_SCORE = "Score";
 
+        // Sentiment Collection
+        protected const string KEY_SENTIMENT = "sentiment";
     }
 }

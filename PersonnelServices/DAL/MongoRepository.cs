@@ -22,6 +22,7 @@ namespace PersonnelServices.DAL
             ApiTest = new MongoTest(mongoClient.GetDatabase(DBNAME).GetCollection<ModTest>(API_TEST));
             ApiSurveys = new MongoSurveys(mongoClient.GetDatabase(DBNAME).GetCollection<ModSurveys>(API_SURVEYS));
             ApiEmotion = new MongoEmotion(mongoClient.GetDatabase(DBNAME).GetCollection<ModEmotion>(API_EMOTIONS));
+            ApiSentiment = new MongoSentiments(mongoClient.GetDatabase(DBNAME).GetCollection<ModSentiments>(API_SENTIMENTS));
         }
 
         private readonly string API_TEST = "test";
@@ -32,5 +33,8 @@ namespace PersonnelServices.DAL
 
         private readonly string API_EMOTIONS = "emotions";
         public IEmotionsDAL ApiEmotion { get; private set; }
+
+        private readonly string API_SENTIMENTS = "sentiments";
+        public IApiSentiments ApiSentiment { get; private set; }
     }
 }
