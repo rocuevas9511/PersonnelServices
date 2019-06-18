@@ -25,6 +25,10 @@ namespace PersonnelServices.Model
         {
             get { return KEY_SCORE; }
         }
+        public static string MODEL_FACE_ID
+        {
+            get { return KEY_FACE_ID; }
+        }
 
         [BsonElement(KEY_DATE)]
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
@@ -38,6 +42,9 @@ namespace PersonnelServices.Model
 
         [BsonElement(KEY_SCORE)]
         public string Score { get; set; }
+
+        [BsonElement(KEY_FACE_ID)]
+        public string FaceId { get; set; }
 
     }
 }

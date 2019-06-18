@@ -33,14 +33,17 @@ namespace PersonnelServices.Controllers
                         file.CopyTo(ms);
                         var fileBytes = ms.ToArray();
 
-                        ModEmotion result = await imageProcessingService.MakeAnalysisRequest(fileBytes);
+                        List<ModEmotion> resultList = await imageProcessingService.MakeAnalysisRequest(fileBytes);
+                        List<bool> inserList = new List<bool>();
+                        if (resultList != null)
+                        {          
+                            foreach(var emotion in resultList)
+                            {
+                                inserList.Add( await _mongodb.ApiEmotion.InsertEmotion(emotion));
+                            }
 
-                        if (result!=null)
-                        {                            
-                            bool insert = await _mongodb.ApiEmotion.InsertEmotion(result);
-
-                            if(insert)
-                                return Ok(result);
+                            if(inserList.TrueForAll(element=>element))
+                                return Ok(resultList);
                             else
                                 return StatusCode(500, $"Server Internal Error, The object wasn't saved");
                         }

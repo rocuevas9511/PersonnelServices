@@ -30,7 +30,7 @@ namespace PersonnelServices.Controllers
             }
         }
         
-        public async Task<ModEmotion> MakeAnalysisRequest(byte[] byteData)
+        public async Task<List<ModEmotion>> MakeAnalysisRequest(byte[] byteData)
         {
             var client = new HttpClient();
 
@@ -52,35 +52,52 @@ namespace PersonnelServices.Controllers
             }
         }
 
-        public ModEmotion JsonToEmotion(string json)
+        public List<ModEmotion> JsonToEmotion(string json)
         {
             dynamic jsonResponse = JsonConvert.DeserializeObject(json);
-            var response = jsonResponse[0];
-            var face = response["faceAttributes"];
-            JObject emotion = face["emotion"];
-            
-            double max = double.MinValue;
-            string key = string.Empty;
 
-            foreach (var child in emotion)
+            if (jsonResponse.Count== 0)
             {
-                JToken val = child.Value;
-                float valf = (float)val;
-                if (valf>max)
-                {
-                    key = child.Key;
-                    max = valf;
-                }
+                return null;
             }
-            
-            ModEmotion modEmotion = new ModEmotion()
+
+            List<ModEmotion> responseList = new List<ModEmotion>();
+
+            for (int i = 0;i< jsonResponse.Count;i++)
             {
-                Date = DateTime.UtcNow,
-                Details = emotion.ToString(),
-                Emotion = key,
-                Score = max.ToString()
-            };
-            return modEmotion;
+                var response = jsonResponse[i];
+
+                var face = response["faceAttributes"];
+                var faceId = response["faceId"];
+
+                JObject emotion = face["emotion"];
+
+                double max = double.MinValue;
+                string key = string.Empty;
+
+                foreach (var child in emotion)
+                {
+                    JToken val = child.Value;
+                    float valf = (float)val;
+                    if (valf > max)
+                    {
+                        key = child.Key;
+                        max = valf;
+                    }
+                }
+
+                ModEmotion modEmotion = new ModEmotion()
+                {
+                    Date = DateTime.UtcNow,
+                    Details = emotion.ToString(),
+                    Emotion = key,
+                    Score = max.ToString(),
+                    FaceId = faceId
+                };
+                responseList.Add(modEmotion);
+            }
+
+            return responseList;
         }
 
     }

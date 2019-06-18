@@ -19,6 +19,8 @@ namespace PersonnelServices.Model
         protected const string KEY_DETAILS = "Details";
         protected const string KEY_EMOTION = "Emotion";
         protected const string KEY_SCORE = "Score";
+        protected const string KEY_FACE_ID = "FaceID";
+
 
         // Sentiment Collection
         protected const string KEY_SENTIMENT = "sentiment";
