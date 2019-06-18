@@ -36,7 +36,7 @@ namespace PersonnelServices.Controllers
 
                     if (result > 0)
                     {
-                        await _mongodb.ApiSentiment.InsertSentiment(new Model.ModSentiments { Date = DateTime.UtcNow.ToString(), Score = result.ToString(), Sentiment = result > 0.5 ? "good" : "bad" });
+                        await _mongodb.ApiSentiment.InsertSentiment(new Model.ModSentiments { Date = DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm:ss"), Score = result.ToString(), Sentiment = result > 0.5 ? "good" : "bad" });
 
                         return Ok(result);
                     }

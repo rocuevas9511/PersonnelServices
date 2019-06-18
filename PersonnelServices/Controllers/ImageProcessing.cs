@@ -88,7 +88,7 @@ namespace PersonnelServices.Controllers
 
                 ModEmotion modEmotion = new ModEmotion()
                 {
-                    Date = DateTime.UtcNow.ToString(),
+                    Date = DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm:ss"),
                     Details = emotion.ToString(),
                     Emotion = key,
                     Score = max.ToString(),
