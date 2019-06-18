@@ -32,12 +32,8 @@ stages:
       
 
     - script: dotnet restore
-    - task: DotNetCoreCLI@2
-      displayName: Build
-      inputs:
-        command: publish
-        projects: '**/*.csproj'
-        arguments: '--configuration Release' # Update this to match your need
+    - script: dotnet publish
+    
 
     - task: ArchiveFiles@2
       displayName: 'Archive files'
