@@ -74,4 +74,4 @@ stages:
               azureSubscription: $(azureSubscription)              
               appName: $(webAppName)              
               Package: $(System.ArtifactsDirectory)/**/*.zip
-              startUpCommand: 'dotnet run --project ./PersonnelServices/PersonnelServices.csproj'
+              startUpCommand: 'dotnet ./PersonnelServices/bin/Debug/netcoreapp2.2/PersonnelServices.dll'
