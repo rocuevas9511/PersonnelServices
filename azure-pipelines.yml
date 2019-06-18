@@ -38,9 +38,20 @@ stages:
         command: build
         projects: '**/*.csproj'
         arguments: '--configuration Release' # Update this to match your need
-      
 
-    - task: PublishBuildArtifacts@1
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
+
+    - task: PublishPipelineArtifact@0
+      displayName: 'Publish pipeline artifacts'
+      inputs:
+        targetPath: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
 
 - stage: Deploy
   displayName: Deploy stage
