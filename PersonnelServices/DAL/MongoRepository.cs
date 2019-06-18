@@ -20,10 +20,13 @@ namespace PersonnelServices.DAL
             }
 
             ApiTest = new MongoTest(mongoClient.GetDatabase(DBNAME).GetCollection<ModTest>(API_TEST));
+            ApiSurveys = new MongoSurveys(mongoClient.GetDatabase(DBNAME).GetCollection<ModSurveys>(API_SURVEYS));
         }
 
         private readonly string API_TEST = "test";
-
         public IApiTest ApiTest { get; private set; }
+
+        private readonly string API_SURVEYS = "surveys";
+        public IApiSurveys ApiSurveys { get; private set; }
     }
 }

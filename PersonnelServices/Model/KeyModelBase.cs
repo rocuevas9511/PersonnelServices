@@ -9,5 +9,8 @@ namespace PersonnelServices.Model
         protected const string KEY_NAME = "name";
         protected const string KEY_MESSAGE = "message";
 
+        // Surveys Collection
+        protected const string KEY_QUESTION = "question";
+        protected const string KEY_RESPONSE = "response";
     }
 }

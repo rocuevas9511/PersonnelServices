@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace PersonnelServices.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class PersonnelServicesController : PersonnelBaseController
     {
         public PersonnelServicesController(IRepository repository)
@@ -20,7 +18,7 @@ namespace PersonnelServices.Controllers
 
         [HttpGet]
         [SwaggerOperation(
-            Summary = "Get una pruba del API",
+            Summary = "Obtiene una pruba del API",
             Description = "Solo es una prueba del API.",
             OperationId = "GetTest",
             Tags = new[] { "Test" }
@@ -47,6 +45,41 @@ namespace PersonnelServices.Controllers
                 }
             }
             catch 
+            {
+                response = ResponseErrorCode();
+            }
+
+            return response;
+        }
+
+        [HttpGet]
+        [SwaggerOperation(
+            Summary = "Set survey",
+            Description = "Solo es una prueba del API.",
+            OperationId = "GetTest",
+            Tags = new[] { "Test" }
+        )]
+        [SwaggerResponse(201, "Successfully")]
+        [SwaggerResponse(500, "Something not expected happened.")]
+        [Route("survey/insert/{survey}")]
+        public async Task<IActionResult> SetSurvey(string survey)
+        {
+            IActionResult response;
+
+            try
+            {
+                string result = await _mongodb.ApiSurveys.InsertSurvey( new ModSurveys { Question = survey, Response = "" }  );
+
+                if (result.Length > 0)
+                {
+                    response = Ok(result);
+                }
+                else
+                {
+                    response = NoContent();
+                }
+            }
+            catch
             {
                 response = ResponseErrorCode();
             }
