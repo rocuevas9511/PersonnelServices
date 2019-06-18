@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PersonnelServices.Model;
 using System;
@@ -13,15 +14,20 @@ namespace PersonnelServices.Controllers
 {    
     public class ImageProcessing
     {
-        const string subscriptionKey = "1b571353cbdf4e97b9e341e88c118d55";
-        const string uriBase = "https://centralus.api.cognitive.microsoft.com/face/v1.0/";
-        const string requestParameters = "returnFaceId=true&returnFaceLandmarks=false" +
+        readonly string subscriptionKey = "1b571353cbdf4e97b9e341e88c118d55";
+        readonly string uriBase = "https://centralus.api.cognitive.microsoft.com/face/v1.0/";
+        readonly string requestParameters = "returnFaceId=true&returnFaceLandmarks=false" +
                 "&returnFaceAttributes=emotion";
 
-        public ImageProcessing()
+        public ImageProcessing(IConfiguration configuration)
         {
-            //subscriptionKey = Configuration.GetSection("ConnectionStrings").GetValue<string>("MongoDBConnectionString");
-             
+            subscriptionKey = configuration.GetSection("AzureConnectionStrings").GetValue<string>("subscriptionKey");
+            uriBase = configuration.GetSection("AzureConnectionStrings").GetValue<string>("uriBase");
+
+            if (string.IsNullOrEmpty(subscriptionKey))
+            {
+                Console.WriteLine("Error,Configuration file wasn't charged");
+            }
         }
         
         public async Task<ModEmotion> MakeAnalysisRequest(byte[] byteData)

@@ -17,7 +17,7 @@ namespace PersonnelServices.Controllers
         public ImageRecognitionController(IRepository repository, IConfiguration configuration)
             : base(repository, configuration)
         {
-            imageProcessingService = new ImageProcessing();
+            imageProcessingService = new ImageProcessing(configuration);
         }
 
         [HttpPost]
