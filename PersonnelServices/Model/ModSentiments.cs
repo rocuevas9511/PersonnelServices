@@ -23,9 +23,8 @@ namespace PersonnelServices.Model
             get { return KEY_SENTIMENT; }
         }
 
-        [BsonElement(KEY_DATE)]
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime Date { get; set; }
+        [BsonElement(KEY_DATE)]        
+        public String Date { get; set; }
 
         [BsonElement(KEY_SCORE)]
         public string Score { get; set; }

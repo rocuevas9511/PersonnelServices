@@ -31,8 +31,7 @@ namespace PersonnelServices.Model
         }
 
         [BsonElement(KEY_DATE)]
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime Date { get; set; }
+        public String Date { get; set; }
 
         [BsonElement(KEY_DETAILS)]
         public string Details { get; set; }
