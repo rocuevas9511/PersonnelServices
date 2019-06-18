@@ -74,4 +74,4 @@ stages:
               azureSubscription: $(azureSubscription)              
               appName: $(webAppName)              
               Package: $(System.ArtifactsDirectory)/**/*.zip
-              startUpCommand: 'dotnet ./PersonnelServices/bin/Debug/netcoreapp2.2/PersonnelServices.dll'
+              startUpCommand: 'dotnet ./PersonnelServices/bin/Debug/netcoreapp2.2/publish/PersonnelServices.dll'
