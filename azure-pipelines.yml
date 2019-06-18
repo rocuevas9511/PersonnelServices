@@ -1,0 +1,76 @@
+
+trigger:
+- master
+
+variables:
+
+  # Azure Resource Manager connection created during pipeline creation
+  azureSubscription: 'fcff5ec6-6070-4d9f-ad5c-c1f888e5d360'
+  
+  # Web app name
+  webAppName: 'personnelservices'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  displayName: Build stage
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+
+      # do this before all your .NET Core tasks
+    steps:
+    - task: DotNetCoreInstaller@0
+      inputs:
+        version: '2.2' # replace this value with the version that you need for your project
+      displayName: 'Install dotnet'
+    # ...
+      
+
+    - script: dotnet restore
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        command: build
+        projects: '**/*.csproj'
+        arguments: '--configuration Release' # Update this to match your need
+      
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: publish
+        publishWebProjects: True
+        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        zipAfterPublish: True
+
+    - task: PublishBuildArtifacts@1
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    environment: 'development'
+    pool: 
+      vmImage: $(vmImageName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadPipelineArtifact@1
+            displayName: 'Download Pipeline Artifact'
+            inputs:
+              buildType: 'current'
+            
+          - task: AzureWebApp@1
+            displayName: 'Azure Web App Deploy: carebotdashboards'
+            inputs:
+              azureSubscription: $(azureSubscription)              
+              appName: $(webAppName)              
+              Package: $(System.ArtifactsDirectory)/**/*.zip
+              startUpCommand: 'dotnet run --project ./PersonnelServices/PersonnelServices.csproj'
