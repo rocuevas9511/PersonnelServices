@@ -24,7 +24,8 @@ namespace PersonnelServices.Model
         }
 
         [BsonElement(KEY_DATE)]
-        public string Date { get; set; }
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+        public DateTime Date { get; set; }
 
         [BsonElement(KEY_SCORE)]
         public string Score { get; set; }
